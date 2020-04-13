@@ -1,0 +1,25 @@
+.Notification{
+
+font-size: 30px;  
+background-color: green;
+border-color: darkgreen;
+border-width: 5px;
+color: blue;
+padding: 10px;
+margin-bottom: 45px;
+
+
+}
+
+.error{
+
+font-size: 30px;  
+background-color: red;
+border-color: darkred;
+border-width: 5px;
+color: black;
+padding: 10px;
+margin-bottom: 45px;
+
+
+}
