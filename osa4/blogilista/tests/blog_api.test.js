@@ -47,10 +47,33 @@ test('Id field should be called id', async () => {
 
 test('Blogs should be added', async () => {
 
-    const res = await api
+    const firstRes = await api
+                .get('/api/blogs')
+
+    const sendRes = await api
                 .post('/api/blogs')
                 .send(helper.someBlogs[2])
-                
-    expect(res.body.length).toBe(3)
+    
+    const secondRes = await api
+                .get('/api/blogs')
+
+    expect(secondRes.body.length).toBe(firstRes.body.length + 1)
+    
+
+})
+
+test('No likes-field equals zero likes', async () => {
+
+    const sendRes = await api
+                .post('/api/blogs')
+                .send(helper.someBlogs[6]) //Blog without field "likes"
+
+    expect(sendRes.body.likes).toBe(0)
+
+})
+
+afterAll(() => {
+
+    mongoose.connection.close()
 
 })
