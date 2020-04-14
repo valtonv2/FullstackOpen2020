@@ -85,6 +85,12 @@ const someBlogs = [
   author: "Robert C. Martin",
   url: "http://blog.cleancoder.com/uncle-bob/2016/05/01/TypeWars.html",
   __v: 0
+},
+{
+  id: "5a422bc61b54a676234d17fc",
+  author: "Robert C. Martin",
+  likes: 2,
+  __v: 0
 }  
 ]
 

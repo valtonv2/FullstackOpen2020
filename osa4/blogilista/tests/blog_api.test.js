@@ -72,6 +72,15 @@ test('No likes-field equals zero likes', async () => {
 
 })
 
+test('Bad request without title and url gives 400', async () => {
+
+    const sendRes = await api
+                .post('/api/blogs')
+                .send(helper.someBlogs[7]) //Blog without title or url
+                .expect(400)
+
+})
+
 afterAll(() => {
 
     mongoose.connection.close()
