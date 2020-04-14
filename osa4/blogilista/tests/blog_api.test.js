@@ -81,6 +81,47 @@ test('Bad request without title and url gives 400', async () => {
 
 })
 
+test('Deletion is possible', async () => {
+
+    const firstRes = await api
+                .get('/api/blogs')
+    
+    const target = firstRes.body[0]
+
+    const deleteRes = await api
+                .delete('/api/blogs/' + target.id)
+                .expect(200)
+            
+    
+    const secondRes = await api
+                .get('/api/blogs')
+
+    expect(secondRes.body.length).toBe(firstRes.body.length - 1)
+
+})
+
+test('Update is possible', async () => {
+
+    const firstRes = await api
+                .get('/api/blogs')
+    
+    const target = firstRes.body[0]
+
+    target.likes = 42
+
+    const updateRes = await api
+                .put('/api/blogs/' + target.id)
+                .send(target)
+                .expect(200)
+            
+    
+    const secondRes = await api
+                .get('/api/blogs')
+
+    expect(secondRes.body[0].likes).toBe(42)
+
+})
+
 afterAll(() => {
 
     mongoose.connection.close()
