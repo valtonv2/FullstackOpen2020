@@ -4,12 +4,14 @@ const app = require('../app')
 const helper = require('../utils/list_helper')
 
 const BlogHandler = require('../models/blog')
+const UserHandler = require('../models/user')
 
 const api = supertest(app)
 
 beforeEach(async ()=>{
 
     await BlogHandler.Blog.deleteMany({})
+    await UserHandler.User.deleteMany({})
 
     let singleBlog = new BlogHandler.Blog(helper.someBlogs[0])
     await singleBlog.save()
@@ -122,8 +124,45 @@ test('Update is possible', async () => {
 
 })
 
+
+
+test('Users can be created and got', async () => {
+
+    const testUser = helper.someUsers[0]
+
+    const firstRes = await api.post('/api/users')
+                    .send(testUser)
+                    .expect(201)
+
+    const secondRes = await api.get('/api/users')
+                    .expect(201)
+    
+    console.log(secondRes.body)
+
+    expect(secondRes.body[0].name).toBeDefined
+    expect(secondRes.body[0].name).toBe(testUser.name)
+
+})
+
+test('False users are not accepted', async () => {
+
+    const shortUsername = await api.post('/api/users')
+                        .send(helper.someUsers[1])
+                        .expect(400)
+
+    const shortPassword = await api.post('/api/users')
+                        .send(helper.someUsers[2])
+                        .expect(400)
+
+    const notUnique = await api.post('/api/users')
+                        .send(helper.someUsers[3])
+                        .expect(400)
+
+})
+
 afterAll(() => {
 
     mongoose.connection.close()
 
 })
+

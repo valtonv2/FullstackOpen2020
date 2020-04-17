@@ -94,11 +94,40 @@ const someBlogs = [
 }  
 ]
 
+const someUsers = [
+  {
+    userName: 'mikko1243',
+    name: 'Mikko Mikkonen',
+    password: 'Muumipeikko193'
+  },
+  {
+    userName: 'mi',
+    name: 'Mikko Mikkonen',
+    password: 'Muumipeikko193'
+  },
+  {
+    userName: 'mikkomikko',
+    name: 'Mikko Mikkonen',
+    password: 'M'
+  },
+  {
+    userName: 'mikko1243',
+    name: 'Mikko Mikkonen',
+    password: 'Muumipeikko'
+  }
+
+
+
+
+
+]
+
 
 module.exports = {
 
     dummy,
     totalLikes,
     favoriteBlog, 
-    someBlogs
+    someBlogs,
+    someUsers
 }
