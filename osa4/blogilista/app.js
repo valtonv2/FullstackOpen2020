@@ -8,6 +8,7 @@ const mongoose = require('mongoose')
 const morgan = require('morgan')
 const blogRouter = require('./controllers/blogs')
 const userRouter = require('./controllers/users')
+const loginRouter = require('./controllers/login')
 const config = require('./utils/config')
 const middleWare = require('./utils/middleware')
 
@@ -24,6 +25,7 @@ app.use(bodyParser.json())
 app.use(morgan('tiny'))
 app.use('/api/blogs', blogRouter)
 app.use('/api/users', userRouter)
+app.use('/api/login', loginRouter)
 app.use(middleWare.errorHandler)
 
 module.exports = app
