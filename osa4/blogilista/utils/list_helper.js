@@ -94,6 +94,12 @@ const someBlogs = [
 }  
 ]
 
+const testUser = {
+  userName: 'test',
+  name: 'test',
+  password: 'test'
+}
+
 const someUsers = [
   {
     userName: 'mikko1243',
@@ -129,5 +135,6 @@ module.exports = {
     totalLikes,
     favoriteBlog, 
     someBlogs,
-    someUsers
+    someUsers,
+    testUser
 }

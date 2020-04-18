@@ -8,13 +8,17 @@ const UserHandler = require('../models/user')
 
 const api = supertest(app)
 
+const token = ""
+
 beforeEach(async ()=>{
 
     await BlogHandler.Blog.deleteMany({})
     await UserHandler.User.deleteMany({})
 
     const firstRes = await api.post('/api/users')
-    .send(testUser)
+    .send(helper.testUser)
+
+    const secondRes = await api.post('/api/blogs')
     
 
     let singleBlog = new BlogHandler.Blog(helper.someBlogs[0])

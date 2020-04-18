@@ -8,7 +8,7 @@ userRouter.post('/', async (request, response) => {
 
     const body = request.body
 
-    if(body. password && body.password.length >= 3) {
+    if(body.password && body.password.length >= 3) {
 
         const cryptedPassword = await bcrypt.hash(body.password, 10)
 
