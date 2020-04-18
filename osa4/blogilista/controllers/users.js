@@ -8,7 +8,7 @@ userRouter.post('/', async (request, response) => {
 
     const body = request.body
 
-    if(body.password.length >= 3) {
+    if(body. password && body.password.length >= 3) {
 
         const cryptedPassword = await bcrypt.hash(body.password, 10)
 
@@ -31,7 +31,7 @@ userRouter.post('/', async (request, response) => {
 //Getting users
 userRouter.get('/', async (request, response) => {
 
-    const allUsers = await User.User.find({})
+    const allUsers = await User.User.find({}).populate('blogs', {url: 1, title: 1, author: 1, _id: 1})
     if(allUsers) response.status(201).json(allUsers.map( user => user.toJSON()))
     else response.status(404).end()
 

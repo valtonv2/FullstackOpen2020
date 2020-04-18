@@ -13,6 +13,10 @@ beforeEach(async ()=>{
     await BlogHandler.Blog.deleteMany({})
     await UserHandler.User.deleteMany({})
 
+    const firstRes = await api.post('/api/users')
+    .send(testUser)
+    
+
     let singleBlog = new BlogHandler.Blog(helper.someBlogs[0])
     await singleBlog.save()
 

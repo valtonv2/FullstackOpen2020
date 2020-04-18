@@ -5,7 +5,7 @@ const blogSchema = mongoose.Schema({
     author: String,
     url: {type: String, required: true},
     likes: {type: Number, default: 0},
-   // user: {type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true}
+    user: {type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true}
   })
 
   blogSchema.set('toJSON', {
@@ -14,7 +14,7 @@ const blogSchema = mongoose.Schema({
 
       ret.id = ret._id.toString()
       delete ret._id
-      delete ret._v
+      delete ret.__v
 
     }
 
