@@ -5,6 +5,7 @@ import Bloglist from './components/Bloglist'
 import loginService from './services/login'
 import Blogform from './components/Blogform'
 import Messagearea from './components/Messagearea'
+import Togglearea from './components/Togglearea'
 
 
 const App = () => {
@@ -15,7 +16,7 @@ const App = () => {
 
   useEffect(() => {
     blogService.getAll().then(blogs =>
-      setBlogs( blogs )
+      setBlogs( blogs.sort(blogCompare) )
     )  
   }, [])
 
@@ -31,6 +32,7 @@ const App = () => {
 
     try {
       const user = await loginService.login({userName: username, password: password})
+      console.log(user)
       setUser(user)
       window.localStorage.setItem('bloguser', JSON.stringify(user))
       blogService.setToken(user.token)
@@ -61,12 +63,11 @@ const App = () => {
 }
 
 const addBlog = async (blog) => {
-
   try{
 
     
     const addResult = await blogService.addOne(blog)
-    setBlogs(blogs.concat(addResult))
+    setBlogs(blogs.concat(addResult).sort(blogCompare))
 
     setAnnouncement('Blog added succesfully')
     setTimeout(() => {setAnnouncement(null)}, 5000)
@@ -83,6 +84,60 @@ const addBlog = async (blog) => {
   }
 }
 
+const updateBlog = async (blog) => {
+  try{
+
+    
+    const updateResult = await blogService.updateOne(blog)
+    const allBlogs = await blogService.getAll()
+    setBlogs(allBlogs.sort(blogCompare))
+    setAnnouncement('Blog updated succesfully')
+    setTimeout(() => {setAnnouncement(null)}, 5000)
+    
+    
+
+  }catch (error) {
+      console.log('Update error')
+      
+      const errormessage = error.response.data.error ? error.response.data.error: error.message
+
+      setAnnouncement(`Updating blog failed: ${errormessage}`)
+      setError(true)
+      setTimeout(() => {setAnnouncement(null); setError(false)}, 5000)
+  }
+}
+
+const deleteBlog = async (blog) => {
+  try{
+
+    
+    const deleteResult = await blogService.deleteOne(blog)
+    setBlogs(blogs.filter(oneblog => oneblog.id !== blog.id))
+
+    setAnnouncement('Blog deleted succesfully')
+    setTimeout(() => {setAnnouncement(null)}, 5000)
+    
+    
+
+  }catch (error) {
+      console.log('Delete error')
+      
+      const errormessage = error.response.data.error != null ? error.response.data.error: error.message
+
+      setAnnouncement(`Deleting blog failed: ${errormessage}`)
+      setError(true)
+      setTimeout(() => {setAnnouncement(null); setError(false)}, 5000)
+  }
+}
+
+const blogCompare = (a,b) => {
+
+  if(a.likes < b.likes) return(1)
+  else if(a.likes > b.likes) return(-1)
+  else return(0)
+
+}
+
 
  if(user === null) return(
   <div>
@@ -97,8 +152,11 @@ const addBlog = async (blog) => {
       <Messagearea message={announcement} error={isError} />
       User {user.name} logged in
       <button onClick={logout}>Logout</button>
-      <Blogform addFunction={addBlog}/>
-      <Bloglist blogs={blogs}/>
+        <Togglearea buttonLabel = 'Add blog'>
+        <Blogform addFunction={addBlog}/>
+      </Togglearea>
+      
+      <Bloglist blogs={blogs} updateFunction={updateBlog} deleteFunction={deleteBlog} user={user}/>
     </div>
   )
 }

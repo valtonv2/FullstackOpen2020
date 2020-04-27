@@ -12,6 +12,9 @@ blogRouter.get('/', async (request, response) => {
     else response.status(404).end()
       
   })
+
+
+
   
   blogRouter.post('/', async (request, response) => {
 
@@ -41,11 +44,13 @@ blogRouter.get('/', async (request, response) => {
    
   })
 
+
+
+
   blogRouter.delete('/:id', async(request, response) => {
 
     const deleteId = request.params.id
     const deleteTarget = await Blog.Blog.findById(deleteId)
-
 
     const token = jwt.verify(request.token, process.env.SECRET)
     if(!token || !token.id || token.id.toString() !== deleteTarget.user.toString()) return(response.status(401).json({error: "No token or invalid token"}))
@@ -59,6 +64,9 @@ blogRouter.get('/', async (request, response) => {
     console.log("Delete blog id ", deleteId)
     response.status(200).end()
   })
+
+
+
 
   blogRouter.put('/:id', async(request, response) => {
 
@@ -76,5 +84,8 @@ blogRouter.get('/', async (request, response) => {
 
     response.status(200).json(result.toJSON).end()
 })
+
+
+
 
   module.exports = blogRouter

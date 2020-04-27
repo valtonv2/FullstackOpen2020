@@ -1,8 +1,37 @@
-import React from 'react'
-const Blog = ({ blog }) => (
-  <div>
-    {blog.title} {blog.author}
-  </div>
-)
+import React, {useState} from 'react'
+const Blog = ({ blog, updateFunction, deleteFunction, user }) =>{
 
+  const [isExpanded, setExpanded] = useState(false)
+
+  const addLike = async (event) => {
+    event.preventDefault()
+    blog.likes = blog.likes + 1
+    await updateFunction(blog)
+  }
+
+  const conditionalButton = {display: user.name === blog.user.userName ? '':'none'}
+  
+
+  if(!isExpanded){
+   return(
+    <div>
+      {blog.title} {blog.author}
+      <button onClick={() => setExpanded(true)}>View</button>
+    </div>
+   )
+  }else{
+    return(
+    <div style = {{border: 'solid'}}>
+      <p>{blog.title}</p>
+      <p>{blog.author}</p>
+      <p>{blog.url}</p>
+      <p>{blog.likes}</p>
+      <button onClick={addLike}>like</button>
+      <p>{blog.user.name}</p>
+      <button style={conditionalButton} onClick={() => deleteFunction(blog)}>Delete</button>
+      <button onClick={() => setExpanded(false)}>Close</button>
+    </div>
+    )
+  }
+}
 export default Blog

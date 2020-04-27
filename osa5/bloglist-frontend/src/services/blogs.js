@@ -1,5 +1,5 @@
 import axios from 'axios'
-const baseUrl = 'http://localhost:3003/api/blogs'
+const baseUrl = 'http://localhost:3003/api/blogs/'
 
 let token = null
 
@@ -23,4 +23,22 @@ const addOne = async (blog) => {
   return response.data
 }
 
-export default { getAll, addOne, setToken }
+const updateOne = async (blog) => {
+
+  console.log('token ', token)
+  const config = {headers: {Authorization: token}}
+
+  const response = await axios.put(baseUrl+blog.id, blog, config)
+  return response.data
+}
+
+const deleteOne = async (blog) => {
+
+  console.log('token ', token)
+  const config = {headers: {Authorization: token}}
+
+  const response = await axios.delete((baseUrl+blog.id), config)
+  return response.data
+}
+
+export default { getAll, addOne, updateOne, setToken, deleteOne }

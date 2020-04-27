@@ -14,7 +14,7 @@ const errorHandler = (err, req, res, next) => {
 const tokenExtractor = (req, res, next) => {
 
     const possibleToken = req.get('Authorization')
-
+    console.log('Recieved authorization: ', possibleToken)
     if(possibleToken && possibleToken.toLowerCase().startsWith('bearer')){
         req.token = possibleToken.substring(7)
     }
