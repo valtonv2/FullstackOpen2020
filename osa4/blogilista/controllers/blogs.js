@@ -82,7 +82,7 @@ blogRouter.get('/', async (request, response) => {
 
     const result = await Blog.Blog.findByIdAndUpdate(targetId, updatedBlog, {new: true})
 
-    response.status(200).json(result.toJSON).end()
+    response.status(200).json(result.toJSON()).end()
 })
 
 
