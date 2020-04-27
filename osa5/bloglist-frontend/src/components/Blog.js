@@ -14,14 +14,14 @@ const Blog = ({ blog, updateFunction, deleteFunction, user }) => {
 
   if(!isExpanded){
     return(
-      <div>
+      <div className="closed">
         {blog.title} {blog.author}
         <button onClick={() => setExpanded(true)}>View</button>
       </div>
     )
   }else{
     return(
-      <div style = {{ border: 'solid' }}>
+      <div style = {{ border: 'solid' }} className="open">
         <p>{blog.title}</p>
         <p>{blog.author}</p>
         <p>{blog.url}</p>

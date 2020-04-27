@@ -26,15 +26,15 @@ const Blogform = ({ addFunction }) => {
       <form onSubmit = {addHelper}>
         <label>
                     title:
-          <input type="text" value={title} onChange={titleChange}></input>
+          <input type="text" id="title" value={title} onChange={titleChange}></input>
         </label>
         <label>
                     author:
-          <input type="text" value={author} onChange={authorChange}></input>
+          <input type="text" id="author" value={author} onChange={authorChange}></input>
         </label>
         <label>
                     url:
-          <input type="text" value={url} onChange={urlChange}></input>
+          <input type="text" id="url" value={url} onChange={urlChange}></input>
         </label>
         <input type="submit" value="Add"></input>
       </form>

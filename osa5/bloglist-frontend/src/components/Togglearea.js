@@ -24,6 +24,8 @@ const Togglearea = (props) => {
   )
 }
 
+Togglearea.displayname = 'Togglearea'
+
 Togglearea.propTypes = {
   buttonLabel: PropTypes.string.isRequired
 }
