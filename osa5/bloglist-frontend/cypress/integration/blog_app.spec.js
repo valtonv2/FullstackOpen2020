@@ -96,6 +96,22 @@ describe('Blog app', function () {
             cy.contains('A test blog').not()
         })
 
+        it('blogs are in order of likes', function () {
+
+            cy.addblog({title: 'A test blog 1', author: 'Some software person', url: 'www.testblog.com'})
+            cy.addblog({title: 'A test blog 2', author: 'Some software person', url: 'www.testblog.com'})
+            cy.get('li').first().contains('A test blog 1')
+
+            cy.contains('A test blog 2').contains('View').click()
+            cy.contains('like').click()
+            
+            cy.visit('http://localhost:3000')
+            cy.get('li').first().contains('A test blog 2')
+
+        })
+
+        
+
 
     })
 
