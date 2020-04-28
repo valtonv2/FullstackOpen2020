@@ -24,6 +24,8 @@ blogRouter.get('/', async (request, response) => {
 
     const author = await User.User.findById(token.id)
 
+    if(!author) return(response.status(401).json({error: "Token does not correspond to any user. Log in again."}))
+
     const jsonauthor = author.toJSON()
     const jsonblog = request.body
 
@@ -39,8 +41,9 @@ blogRouter.get('/', async (request, response) => {
 
     jsonauthor.blogs = jsonauthor.blogs.concat(saveResult._id)
     const updateResult = await User.User.findByIdAndUpdate(jsonauthor.id, jsonauthor)
+    const finalResult = await Blog.Blog.findById(saveResult._id).populate('user', {userName: 1, name: 1, _id: 1})
 
-    response.status(201).json(saveResult.toJSON())
+    response.status(201).json(finalResult.toJSON())
    
   })
 
@@ -80,7 +83,7 @@ blogRouter.get('/', async (request, response) => {
       likes: body.likes
     }
 
-    const result = await Blog.Blog.findByIdAndUpdate(targetId, updatedBlog, {new: true})
+    const result = await Blog.Blog.findByIdAndUpdate(targetId, updatedBlog, {new: true}).populate('user', {userName: 1, name: 1, _id: 1})
 
     response.status(200).json(result.toJSON()).end()
 })

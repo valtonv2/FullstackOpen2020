@@ -5,9 +5,11 @@ const Bloglist = ({ blogs, updateFunction, deleteFunction, user }) => {
 
   const doList = (blogs) => {
     return(
-      <ul>
-        {blogs.map(blog => <li key={blog.id}><Blog blog={blog} updateFunction={updateFunction} deleteFunction={deleteFunction} user={user} /></li>)}
-      </ul>
+      <div id = "bloglist">
+        <ul>
+          {blogs.map(blog => <li key={blog.id}><Blog blog={blog} updateFunction={updateFunction} deleteFunction={deleteFunction} user={user} /></li>)}
+        </ul>
+      </div>
     )
 
 

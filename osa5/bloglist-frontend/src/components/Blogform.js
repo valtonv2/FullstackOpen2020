@@ -36,7 +36,7 @@ const Blogform = ({ addFunction }) => {
                     url:
           <input type="text" id="url" value={url} onChange={urlChange}></input>
         </label>
-        <input type="submit" value="Add"></input>
+        <input type="submit" value="Add" id="addbutton"></input>
       </form>
     </>
   )
