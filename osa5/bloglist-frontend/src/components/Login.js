@@ -16,21 +16,21 @@ const Login = ({ loginFunction }) => {
   }
 
   return(
-    <>
+    <div className='loginform'>
       <p>Login:</p>
 
       <form onSubmit = {loginHelper}>
         <label>
                     Username:
-          <input type="text" value={username} onChange={usernameChange}></input>
+          <input type="text" value={username} onChange={usernameChange} id="username"></input>
         </label>
         <label>
                     Password:
-          <input type="text" value={password} onChange={passwordChange}></input>
+          <input type="text" value={password} onChange={passwordChange} id="password"></input>
         </label>
-        <input type="submit" value="Login"></input>
+        <input type="submit" value="Login" id="loginbutton"></input>
       </form>
-    </>
+    </div>
   )
 }
 
