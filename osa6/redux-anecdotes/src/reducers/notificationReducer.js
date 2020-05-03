@@ -6,13 +6,12 @@
 
     return (dispatch) => {
 
-      dispatch({type: 'DISPLAY', data: content})
-      setTimeout(() => dispatch({type:'CLEAR'}), time)
-
+      const timer = setTimeout(() => dispatch({type:'CLEAR'}), time)
+      dispatch({type: 'DISPLAY', data: {content, timer}})
     }
   }
    
-  const initialState = ''
+  const initialState = {content: '', timer: null}
   
   const notificationReducer = (state = initialState, action) => {
     console.log('state now: ', state)
@@ -21,10 +20,13 @@
     switch(action.type){
   
       case 'DISPLAY':
-        return action.data
+        if(state.timer){
+           clearTimeout(state.timer)
+          }
+        return {content: action.data.content, timer: action.data.timer}
         
       case 'CLEAR':
-        return ''
+        return {content: '', timer: null}
       default:
         return state
   

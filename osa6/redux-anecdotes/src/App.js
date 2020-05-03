@@ -22,8 +22,8 @@ const App = () => {
   return (
     <div>
       <Notification />
-      <Filter />
       <h2>Anecdotes</h2>
+      <Filter />
       <AnecdoteForm />
       <AnecdoteList />
     </div>
