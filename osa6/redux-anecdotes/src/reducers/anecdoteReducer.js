@@ -1,33 +1,31 @@
-const anecdotesAtStart = [
-  'If it hurts, do it more often',
-  'Adding manpower to a late software project makes it later!',
-  'The first 90 percent of the code accounts for the first 90 percent of the development time...The remaining 10 percent of the code accounts for the other 90 percent of the development time.',
-  'Any fool can write code that a computer can understand. Good programmers write code that humans can understand.',
-  'Premature optimization is the root of all evil.',
-  'Debugging is twice as hard as writing the code in the first place. Therefore, if you write the code as cleverly as possible, you are, by definition, not smart enough to debug it.'
-]
+import anecdoteService from "../services/anecdoteService"
 
 //ACTION CREATORS
-
-export const create = (newContent) => {
-  return {type: 'CREATENEW', data: newContent}
+export const create = (newAnecdote) => {
+  return async (dispatch) => { 
+    const addResult = await anecdoteService.addone(newAnecdote)
+    dispatch({type: 'CREATENEW', data: addResult})
+  }
 } 
 
-export const vote = (id) =>{
-  return {type:'VOTE', data:{id: id}}
+export const vote = (anecdote) =>{
+  return async (dispatch) => {
+    
+    const updatedAnecdote = {...anecdote, votes: anecdote.votes+1}
+    const updateResult = await anecdoteService.updateone(updatedAnecdote)
+    dispatch({type:'VOTE', data:updateResult})
+
+  } 
 }
 
-const getId = () => (100000 * Math.random()).toFixed(0)
-
-const asObject = (anecdote) => {
-  return {
-    content: anecdote,
-    id: getId(),
-    votes: 0
+export const initializeAnecdotes = () => {
+  return async (dispatch) => {
+    const anecdotes = await anecdoteService.getall()
+    dispatch({type:'INITIALIZE_ANECDOTES', data: anecdotes.sort(compare)})
   }
-}
+} 
 
-const initialState = anecdotesAtStart.map(asObject)
+const initialState = []
 
 const compare = (a,b) =>{
 
@@ -45,12 +43,17 @@ const anecdoteReducer = (state = initialState, action) => {
   switch(action.type){
 
     case 'VOTE':
-      const votedAnecdote = state.find(a => a.id === action.data.id)
-      votedAnecdote.votes += 1
-      return state.filter(a => a.id !== action.data.id).concat(votedAnecdote).sort(compare)
+      return state
+      .filter(a => a.id !== action.data.id)
+      .concat(action.data)
+      .sort(compare)
       
     case 'CREATENEW':
-      return state.concat(asObject(action.data))
+      return state.concat(action.data)
+
+    case 'INITIALIZE_ANECDOTES':
+      return action.data
+    
     default:
       return state
 

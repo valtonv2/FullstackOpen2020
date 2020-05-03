@@ -1,15 +1,17 @@
 
   
   //ACTION CREATORS
-  
-  export const display = (content) => {
-    return {type: 'DISPLAY', data: content}
-  } 
-  
-  export const clear = () =>{
-    return {type:'CLEAR'}
+
+  export const setNotification = (content, time) => {
+
+    return (dispatch) => {
+
+      dispatch({type: 'DISPLAY', data: content})
+      setTimeout(() => dispatch({type:'CLEAR'}), time)
+
+    }
   }
-  
+   
   const initialState = ''
   
   const notificationReducer = (state = initialState, action) => {
