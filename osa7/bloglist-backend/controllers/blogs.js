@@ -1,13 +1,14 @@
 const blogRouter = require('express').Router()
 const Blog = require('../models/blog')
 const User = require('../models/user')
+const Comment = require('../models/comment')
 const jwt = require('jsonwebtoken')
 
 
 
 blogRouter.get('/', async (request, response) => {
     
-    const blogs = await Blog.Blog.find({}).populate('user', {userName: 1, name: 1, _id: 1})
+    const blogs = await Blog.Blog.find({}).populate('user', {userName: 1, name: 1, _id: 1}).populate('comments', {_id: 1, content: 1})
     if(blogs) response.json(blogs.map(blog => blog.toJSON()))
     else response.status(404).end()
       
@@ -34,14 +35,15 @@ blogRouter.get('/', async (request, response) => {
       author: jsonblog.author,
       url: jsonblog.url,
       likes: jsonblog.likes,
-      user: author._id
+      user: author._id,
+      comments: jsonblog.comments
     })
 
     const saveResult = await blog.save()
 
     jsonauthor.blogs = jsonauthor.blogs.concat(saveResult._id)
     const updateResult = await User.User.findByIdAndUpdate(jsonauthor.id, jsonauthor)
-    const finalResult = await Blog.Blog.findById(saveResult._id).populate('user', {userName: 1, name: 1, _id: 1})
+    const finalResult = await Blog.Blog.findById(saveResult._id).populate('user', {userName: 1, name: 1, _id: 1}).populate('comments', {_id: 1, content: 1})
 
     response.status(201).json(finalResult.toJSON())
    
@@ -80,12 +82,36 @@ blogRouter.get('/', async (request, response) => {
       title: body.title,
       author: body.author,
       url: body.url,
-      likes: body.likes
+      likes: body.likes,
+      comments: body.comments
     }
 
-    const result = await Blog.Blog.findByIdAndUpdate(targetId, updatedBlog, {new: true}).populate('user', {userName: 1, name: 1, _id: 1})
+    const result = await Blog.Blog.findByIdAndUpdate(targetId, updatedBlog, {new: true}).populate('user', {userName: 1, name: 1, _id: 1}).populate('comments', {_id: 1, content: 1})
 
     response.status(200).json(result.toJSON()).end()
+})
+
+blogRouter.post('/:id/comments', async(request, response) => {
+
+  const targetId = request.params.id
+  const comment = new Comment.Comment({content: request.body.content})
+
+  const saveResult = await comment.save()
+
+  const searchResult = await Blog.Blog.findById(targetId)
+  const oldBlog = searchResult.toJSON()
+
+  const updatedBlog = {
+    title: oldBlog.title,
+    author: oldBlog.author,
+    url: oldBlog.url,
+    likes: oldBlog.likes,
+    comments: oldBlog.comments.concat(saveResult._id)
+  }
+
+  const result = await Blog.Blog.findByIdAndUpdate(targetId, updatedBlog, {new: true}).populate('user', {userName: 1, name: 1, _id: 1}).populate('comments', {_id: 1, content: 1})
+
+  response.status(200).json(result.toJSON()).end()
 })
 
 

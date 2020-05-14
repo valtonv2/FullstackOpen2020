@@ -7,7 +7,7 @@ import { notify } from './notificationreducer'
 
 export const login = (username, password) => {
 
-    return async (dispatch) => { 
+  return async (dispatch) => {
     try {
       const user = await loginService.login({ userName: username, password: password })
       console.log(user)
@@ -15,7 +15,8 @@ export const login = (username, password) => {
       blogService.setToken(user.token)
 
       notify('Login succesful', false, 5000)
-      dispatch({type: 'LOGIN', data: user})
+      dispatch({ type: 'LOGIN', data: user })
+
 
 
     } catch (error) {
@@ -25,44 +26,44 @@ export const login = (username, password) => {
 
       notify(`Login failed: ${errormessage}`, true, 5000)
     }
-   }
   }
+}
 
 export const logout = () => {
-    return (dispatch) => {
-    dispatch({type: 'LOGOUT'})
+  return (dispatch) => {
+    dispatch({ type: 'LOGOUT' })
     blogService.setToken(null)
     window.localStorage.removeItem('bloguser')
-    }
   }
+}
 
 export const tryOld = () => {
 
-    return (dispatch) => {
+  return (dispatch) => {
     const oldUser = window.localStorage.getItem('bloguser')
     if(oldUser !== null){
-      dispatch({type: 'LOGIN', data: JSON.parse(oldUser)})
+      dispatch({ type: 'LOGIN', data: JSON.parse(oldUser) })
       blogService.setToken(JSON.parse(oldUser).token)
     }else{
-        console.log('No old user.')
+      console.log('No old user.')
     }
   }
 }
 
-  
+
 const loginreducer = (state = null, action) => {
 
-    switch (action.type){
-        case 'LOGIN':
-            return action.data
+  switch (action.type){
+  case 'LOGIN':
+    return action.data
 
-        case 'LOGOUT':
-            return null
+  case 'LOGOUT':
+    return null
 
-        default:
-            return state
+  default:
+    return state
 
-    }
+  }
 
 }
 

@@ -1,25 +1,26 @@
 import React from 'react'
-import Blog from './Blog'
-import {useSelector} from 'react-redux'
+import { useSelector } from 'react-redux'
+import { Link } from 'react-router-dom'
+import { Table } from 'react-bootstrap'
 
 const Bloglist = () => {
 
   const blogs = useSelector(state => state.blogs)
-  const user = useSelector(state => state.user)
 
   const doList = (blogs) => {
     return(
       <div id = "bloglist">
-        <ul>
-          {blogs.map(blog => <li key={blog.id}><Blog blog={blog} user={user} /></li>)}
-        </ul>
+        <Table striped>
+          <tbody>
+            {blogs.map(blog => <tr key={blog.id}><td><Link to={`blogs/${blog.id}`}>{blog.title}</Link></td></tr>)}
+          </tbody>
+        </Table>
       </div>
     )
   }
 
   return(
     <>
-      <h2>Blogs</h2>
       {blogs && doList(blogs)}
     </>
 

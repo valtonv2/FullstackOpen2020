@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { login } from '../reducers/loginreducer'
-import {useDispatch} from 'react-redux'
+import { useDispatch } from 'react-redux'
+import { Form, Button } from 'react-bootstrap'
 
 const Login = () => {
 
@@ -23,17 +24,15 @@ const Login = () => {
     <div className='loginform'>
       <p>Login:</p>
 
-      <form onSubmit = {loginHelper}>
-        <label>
-                    Username:
-          <input type="text" value={username} onChange={usernameChange} id="username"></input>
-        </label>
-        <label>
-                    Password:
-          <input type="text" value={password} onChange={passwordChange} id="password"></input>
-        </label>
-        <input type="submit" value="Login" id="loginbutton"></input>
-      </form>
+      <Form onSubmit = {loginHelper}>
+        <Form.Group>
+          <Form.Label>Username:</Form.Label>
+          <Form.Control type="text" value={username} onChange={usernameChange} id="username" />
+          <Form.Label>Password:</Form.Label>
+          <Form.Control type="text" value={password} onChange={passwordChange} id="password"/>
+          <Button type="submit" id="loginbutton" variant='primary'>Login</Button>
+        </Form.Group>
+      </Form>
     </div>
   )
 }
