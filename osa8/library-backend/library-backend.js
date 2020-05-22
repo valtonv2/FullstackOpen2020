@@ -66,8 +66,6 @@ const typeDefs = gql`
       password: String!
     ):Token
 
-    me: User
-
    }
 
 
@@ -94,6 +92,10 @@ const resolvers = {
       },
       allAuthors: () => {
         return Author.find({})
+      },
+
+      me: (root, args, context) => {
+        return(context.currentUser)
       }
   },
 
@@ -104,6 +106,7 @@ const resolvers = {
 
         if(!context.currentUser) throw new AuthenticationError("not authenticated")
 
+        console.log(context.currentUser)
         const authors = await Author.find({})
         //Add unknown author
         if(!authors.map(a => a.name).includes(args.author)) {
@@ -174,12 +177,11 @@ const resolvers = {
       }
     
       const tokenuser = {username: usercandidate.username, id: usercandidate._id}
-      console.log(tokenuser)
 
       return {value: jwt.sign(tokenuser, SECRET)}
     },
     //#############################################################################
-    me: (root, args, context) => {return(context.currentUser)}
+
 
   },
 
@@ -197,16 +199,16 @@ const server = new ApolloServer({
   typeDefs,
   resolvers,
   context: async ({ req }) => {
+    
     const auth = req ? req.headers.authorization : null
     if (auth && auth.toLowerCase().startsWith('bearer ')) {
       const decodedToken = jwt.verify(
         auth.substring(7), SECRET
       )
-      console.log(decodedToken)
+      
       const currentUser = await User
         .findById(decodedToken.id)
 
-      
       return { currentUser }
     }
   }
