@@ -87,7 +87,7 @@ const resolvers = {
         const books = await Book.find({}).populate('author')
 
          let result = args.author ? books.filter(b => b.author.name === args.author):books //Check author
-         result = args.genre ? result.filter(b => b.genres.includes(args.genre)): result //Check genre
+         result = (args.genre && args.genre !== 'all') ? result.filter(b => b.genres.includes(args.genre)): result //Check genre
          return result
       },
       allAuthors: () => {
