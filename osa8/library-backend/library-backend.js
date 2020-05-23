@@ -1,4 +1,5 @@
-const { ApolloServer, gql, UserInputError, AuthenticationError, PubSub } = require('apollo-server')
+const { ApolloServer, gql, UserInputError, AuthenticationError} = require('apollo-server')
+const {PubSub} = require('apollo-server')
 const { v4: uuidv4 } = require('uuid');
 const mongoose = require('mongoose')
 const Book = require('./dbmodels/book')
@@ -7,8 +8,6 @@ const User = require('./dbmodels/user')
 const jwt = require('jsonwebtoken')
 
 const SECRET = 'salfkghjaoödshgaöogvhaöodsfvhasdfuo1345124'
-
-const pubsub = new PubSub()
 
 //Database connection
 mongoose.connect('mongodb+srv://librarian:guiltyspark@cluster0-sjkt7.mongodb.net/test?retryWrites=true&w=majority', {useNewUrlParser: true})
@@ -82,6 +81,7 @@ const typeDefs = gql`
     bookAdded: Book!
   }
 `
+const pubsub = new PubSub()
 
 const resolvers = {
   Query: {
@@ -187,16 +187,19 @@ const resolvers = {
       const tokenuser = {username: usercandidate.username, id: usercandidate._id}
 
       return {value: jwt.sign(tokenuser, SECRET)}
-    },
+    }
     //#############################################################################
 
 
   },
 
   Subscription: {
-
-    bookAdded: {subscribe: () => pubsub.asyncIterator(['BOOK_ADDED'])}
-
+    bookAdded: {
+      subscribe: () =>{ 
+        const iterator = pubsub.asyncIterator(['BOOK_ADDED'])
+        return iterator
+      },
+    },
   },
 
   Author: {
