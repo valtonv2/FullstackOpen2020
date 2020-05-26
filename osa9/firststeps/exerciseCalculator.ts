@@ -1,4 +1,4 @@
-interface exerciseResult {
+interface ExerciseResult {
 
     days: number;
     trainingDays: number;
@@ -10,7 +10,7 @@ interface exerciseResult {
 
 }
 
-export const calculateExercises = (measurements: Array<number>, target:number): exerciseResult => {
+export const calculateExercises = (measurements: Array<number>, target: number): ExerciseResult => {
 
     const days = measurements.length;
     const trainingDays = measurements.filter(m => m !== 0).length;
@@ -41,8 +41,8 @@ export const calculateExercises = (measurements: Array<number>, target:number): 
         targetReached,
         rating,
         explanation
-    })
-}
+    });
+};
 
 //const target: number = Number(process.argv[2])
 

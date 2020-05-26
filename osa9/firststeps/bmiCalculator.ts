@@ -1,4 +1,4 @@
-export const calculateBmi = (height:number, weight:number): string => {
+export const calculateBmi = (height: number, weight: number): string => {
 
     if(isNaN(height) || isNaN(weight)) return('Error: False paremeters');
 
@@ -11,7 +11,7 @@ export const calculateBmi = (height:number, weight:number): string => {
     else if(25 <= value && value < 30) return('Overweight');
     else return ('Obese');
 
-}
+};
 
 //Code for running calculator from command line.
 //Causes problems in later exercises
