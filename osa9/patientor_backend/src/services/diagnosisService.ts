@@ -1,4 +1,4 @@
-import diagnoses from '../../data/diagnoses'
-import { Diagnosis } from '../types/diagnosis'
+import diagnoses from '../../data/diagnoses';
+import { Diagnosis } from '../types/diagnosis';
 
-export const getAllDiagnoses = ():Diagnosis[] => diagnoses
+export const getAllDiagnoses = (): Diagnosis[] => diagnoses;
